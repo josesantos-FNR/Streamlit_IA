@@ -92,9 +92,9 @@ if st.button("📊 Calcular Risco de Evasão"):
     financiamento_num = opcoes_financiamento[financiamento_selecionado]
     modalidade_num = opcoes_modalidade[modalidade_selecionada]
     turno_num = opcoes_turno[turno_selecionado]
-    uf_num = opcoes_uf[uf_selecionada] # <-- Traduzindo a UF
+    uf_num = opcoes_uf[uf_selecionada] 
     
-    # Colocando a variável uf_num no DataFrame (agora é tudo número!)
+    # Colocando as variáveis no DataFrame
     dados_entrada = pd.DataFrame([[
         carga_horaria, fator_esforco, financiamento_num, 
         idade, modalidade_num, renda_num, turno_num, uf_num
@@ -103,16 +103,20 @@ if st.button("📊 Calcular Risco de Evasão"):
         'Idade', 'Modalidade de Ensino', 'Renda Familiar', 'Turno', 'UF'
     ])
     
-    # O seu mapa diz que Abandono/Cancelada é a classe 0.
-    # predict_proba retorna [prob_classe_0, prob_classe_1]. Queremos a probabilidade da 0.
+    # Calculando a probabilidade
     probabilidade_evasao = modelo.predict_proba(dados_entrada)[0][0] 
+    porcentagem = probabilidade_evasao * 100
     
+    # Mostrando o resultado na tela
     st.markdown("---")
     st.subheader("Resultado da Previsão")
     
-    porcentagem = probabilidade_evasao * 100
+    # A NOVA LÓGICA DE 3 NÍVEIS
+    if porcentagem > 60:
+        st.error(f"🚨 **ALTO RISCO!** A probabilidade de abandono (evasão) deste aluno é de **{porcentagem:.1f}%**.")
     
-    if porcentagem > 50:
-        st.error(f"⚠️ **ALTO RISCO!** A probabilidade de abandono (evasão) deste aluno é de **{porcentagem:.1f}%**.")
+    elif porcentagem >= 40 and porcentagem <= 60:
+        st.warning(f"🟡 **ATENÇÃO!** A probabilidade de abandono é de **{porcentagem:.1f}%**. O aluno apresenta sinais de risco e requer acompanhamento preventivo.")
+    
     else:
-        st.success(f"✅ **BAIXO RISCO!** A probabilidade de abandono deste aluno é de apenas **{porcentagem:.1f}%**.")
+        st.success(f"✅ **BAIXO RISCO!** A probabilidade de abandono deste aluno é de apenas
