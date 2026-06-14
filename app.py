@@ -119,4 +119,4 @@ if st.button("📊 Calcular Risco de Evasão"):
         st.warning(f"🟡 **ATENÇÃO!** A probabilidade de abandono é de **{porcentagem:.1f}%**. O aluno apresenta sinais de risco e requer acompanhamento preventivo.")
     
     else:
-        st.success(f"✅ **BAIXO RISCO!** A probabilidade de abandono deste aluno é de apenas
+        st.success(f"✅ **BAIXO RISCO!** A probabilidade de abandono deste aluno é de apenas **{porcentagem:.1f}%**.")
