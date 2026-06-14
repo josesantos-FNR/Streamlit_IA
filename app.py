@@ -40,6 +40,14 @@ opcoes_turno = {
     'Integral': 4
 }
 
+
+opcoes_uf = {
+    'AC': 0, 'AL': 1, 'AM': 2, 'AP': 3, 'BA': 4, 'CE': 5, 'DF': 6, 'ES': 7,
+    'GO': 8, 'MA': 9, 'MG': 10, 'MS': 11, 'MT': 12, 'PA': 13, 'PB': 14,
+    'PE': 15, 'PI': 16, 'PR': 17, 'RJ': 18, 'RN': 19, 'RO': 20, 'RR': 21,
+    'RS': 22, 'SC': 23, 'SE': 24, 'SP': 25, 'TO': 26
+}
+
 # ==========================================
 # 2. CONFIGURAÇÃO DA PÁGINA E MODELO
 # ==========================================
@@ -71,24 +79,25 @@ with col2:
     modalidade_selecionada = st.selectbox("Modalidade de Ensino", list(opcoes_modalidade.keys()))
     turno_selecionado = st.selectbox("Turno", list(opcoes_turno.keys()))
     
-    # ATENÇÃO: UF foi deixada como texto provisoriamente
-    uf = st.text_input("UF (Sigla)")
+    # Nova caixa de seleção da UF
+    uf_selecionada = st.selectbox("Estado (UF)", list(opcoes_uf.keys()))
 
 # ==========================================
 # 4. BOTÃO DE PREVISÃO
 # ==========================================
 if st.button("📊 Calcular Risco de Evasão"):
     
-    # Traduzindo os textos selecionados para os números do seu mapa
+    # Traduzindo os textos selecionados para os números
     renda_num = opcoes_renda[renda_selecionada]
     financiamento_num = opcoes_financiamento[financiamento_selecionado]
     modalidade_num = opcoes_modalidade[modalidade_selecionada]
     turno_num = opcoes_turno[turno_selecionado]
+    uf_num = opcoes_uf[uf_selecionada] # <-- Traduzindo a UF
     
-    # Criando o DataFrame na MESMA ordem que o modelo aprendeu
+    # Colocando a variável uf_num no DataFrame (agora é tudo número!)
     dados_entrada = pd.DataFrame([[
         carga_horaria, fator_esforco, financiamento_num, 
-        idade, modalidade_num, renda_num, turno_num, uf
+        idade, modalidade_num, renda_num, turno_num, uf_num
     ]], columns=[
         'Carga Horaria', 'Fator Esforço Curso', 'Fonte de Financiamento', 
         'Idade', 'Modalidade de Ensino', 'Renda Familiar', 'Turno', 'UF'
